@@ -4,7 +4,7 @@ services:
     build: 
       context: ./docker/nginx
       args: 
-        UID: 502
+        UID: $U_ID
     ports:
       - 1000:80
     volumes: 
@@ -14,7 +14,7 @@ services:
     build:
       context: docker/php
       args:
-        UID: 502
+        UID: $U_ID
     volumes:
       - ./:/appdata/www
     env_file:
