@@ -11,6 +11,8 @@ services:
       - ./public:/appdata/www/public
     depends_on:
       - register-service-be
+    networks:
+      - app-network
   register-service-be:
     container_name: register-service-be
     build:
@@ -21,3 +23,8 @@ services:
       - ./:/appdata/www
     env_file:
       - .env
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true
