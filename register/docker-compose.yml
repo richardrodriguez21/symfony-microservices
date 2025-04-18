@@ -9,3 +9,13 @@ services:
       - 1000:80
     volumes: 
       - ./public:/appdata/www/public
+  register-service-be:
+    container_name: register-service-be
+    build:
+      context: docker/php
+      args:
+        UID: 502
+    volumes:
+      - ./:/appdata/www
+    env_file:
+      - .env
