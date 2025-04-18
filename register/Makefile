@@ -2,7 +2,7 @@
 
 OS = $(shell uname)
 UID = $(shell id -u)
-DOCKER_BE = codenip-ms-register-service-be
+DOCKER_BE = register-service-be
 NAMESERVER_IP = $(shell ip address | grep docker0)
 
 ifeq ($(OS),Darwin)
@@ -20,7 +20,7 @@ help: ## Show this help message
 	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
 
 start: ## Start the containers
-	docker network create codenip-microservices-network || true
+	docker network create app-network || true
 	cp -n docker-compose.yml.dist docker-compose.yml || true
 	cp -n .env.dist .env || true
 	U_ID=${UID} docker-compose up -d
@@ -48,7 +48,7 @@ be-logs: ## Tails the Symfony dev log
 # End backend commands
 
 ssh-be: ## bash into the be container
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} /bin/sh
 
 code-style: ## Runs php-cs to fix code styling following Symfony rules
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} php-cs-fixer fix src --rules=@Symfony
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix src --rules=@Symfony
