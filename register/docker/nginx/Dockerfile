@@ -4,3 +4,5 @@ ARG UID
 
 RUN adduser -u $UID -D --disabled-password --gecos "" appuser
 
+COPY ./default.conf /etc/nginx/conf.d/
+
