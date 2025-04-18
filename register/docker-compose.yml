@@ -9,6 +9,8 @@ services:
       - 1000:80
     volumes: 
       - ./public:/appdata/www/public
+    depends_on:
+      - register-service-be
   register-service-be:
     container_name: register-service-be
     build:
