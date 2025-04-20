@@ -1,0 +1,38 @@
+services:
+  mailer-service-be:
+    container_name: mailer-service-be
+    build:
+      context: docker/php
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    env_file:
+      - .env
+    depends_on:
+      - mailer-service-db
+    networks:
+      - app-network
+  mailer-service-db:
+    container_name: mailer-service-db
+    build:
+      context: ./docker/mysql
+    ports:
+      - 10200:3306
+    environment:
+      MYSQL_DATABASE: mailer_database
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mailer-service-db-data:/var/lib/mysql
+    networks:
+      - app-network
+    command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
+
+volumes:
+  mailer-service-db-data:
+
+networks:
+  app-network:
+    external: true
+
+
