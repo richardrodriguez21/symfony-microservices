@@ -1,0 +1,30 @@
+services:
+  application-service-web:
+    container_name: application-service-web
+    build: 
+      context: ./docker/nginx
+      args: 
+        UID: $U_ID
+    ports:
+      - 1100:80
+    volumes: 
+      - ./public:/appdata/www/public
+    depends_on:
+      - application-service-be
+    networks:
+      - app-network
+  application-service-be:
+    container_name: application-service-be
+    build:
+      context: docker/php
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    env_file:
+      - .env
+    networks:
+      - app-network
+networks:
+  app-network:
+    external: true

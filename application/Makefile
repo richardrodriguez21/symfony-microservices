@@ -2,7 +2,7 @@
 
 OS = $(shell uname)
 UID = $(shell id -u)
-DOCKER_BE = register-service-be
+DOCKER_BE = application-service-be
 NAMESERVER_IP = $(shell ip address | grep docker0)
 
 ifeq ($(OS),Darwin)
