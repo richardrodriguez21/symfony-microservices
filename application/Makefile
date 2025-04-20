@@ -39,9 +39,15 @@ build: ## Rebuilds all the containers
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
+	$(MAKE) migrations
+
 # Backend commands
 composer-install: ## Installs composer dependencies
 	U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_BE} composer install --no-interaction
+
+migrations: ## Runs the migrations
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bin/console doctrine:migrations:migrate -n --allow-no-migration
+
 
 be-logs: ## Tails the Symfony dev log
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} tail -f var/log/dev.log
@@ -52,3 +58,5 @@ ssh-be: ## bash into the be container
 
 code-style: ## Runs php-cs to fix code styling following Symfony rules
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix src --rules=@Symfony
+
+.PHONY: migrations
