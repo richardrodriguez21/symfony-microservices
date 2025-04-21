@@ -1,0 +1,13 @@
+services:
+  rabbitmq-service:
+    container_name: rabbitmq-service
+    image: rabbitmq:3.13-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
