@@ -5,7 +5,7 @@ framework:
         #auto_mapping:
         #    App\Entity\: []
         email_validation_mode: html5
-        enable_annotations: true
+        enable_attributes: true
 
 
 when@test:
