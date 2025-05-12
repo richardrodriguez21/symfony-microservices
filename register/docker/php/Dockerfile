@@ -7,8 +7,8 @@ RUN adduser -u ${UID} --disabled-password --gecos "" appuser
 RUN mkdir /home/appuser/.ssh
 RUN chown -R appuser:appuser /home/appuser/
 RUN echo "StrictHostKeyChecking no" >> /home/appuser/.ssh/config
-RUN echo "export COLUMNS=300" >> /home/appuser/.bashrc
-RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.bashrc
+RUN echo "export COLUMNS=300" >> /home/appuser/.profile
+RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.profile
 
 # Install packages and PHP extensions
 RUN apk update \
