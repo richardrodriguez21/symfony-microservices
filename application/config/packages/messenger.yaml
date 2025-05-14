@@ -5,7 +5,7 @@ framework:
             symfony_serializer:
                 format: json
                 context: {}     
-    
+        failure_transport: failed
         transports:
             async_register_application:
                 dsn: '%env(string:MESSENGER_TRANSPORT_DSN)%'
@@ -17,6 +17,8 @@ framework:
                     queues: 
                         register_application_queue:
                             binding_keys: [register_application_queue]
+            failed:
+                dsn: 'doctrine://default?queue_name=failed'
                     
 
         routing:
