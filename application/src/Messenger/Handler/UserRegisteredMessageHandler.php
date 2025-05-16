@@ -6,38 +6,28 @@ namespace App\Messenger\Handler;
 
 use App\Entity\User;
 use App\Messenger\Message\UserRegisteredMessage;
-use App\Messenger\Message\UserSuccessfullyStoredMessage;
-use App\Messenger\RoutingKey;
 use App\Repository\UserRepository;
-use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class UserRegisteredMessageHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class UserRegisteredMessageHandler
 {
     private UserRepository $userRepository;
 
-    private MessageBusInterface $bus;
-
-    public function __construct(UserRepository $userRepository, MessageBusInterface $bus)
+    public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->bus = $bus;
     }
 
     public function __invoke(UserRegisteredMessage $message): void
     {
-        $user = new User($message->getName(), $message->getEmail(), \sha1(\uniqid()));
+        $user = new User($message->getName(), $message->getEmail());
 
-        try {
+        //try {
             $this->userRepository->save($user);
-            $this->bus->dispatch(
-                new UserSuccessfullyStoredMessage($user->getName(), $user->getEmail(), $user->getCode()),
-                [new AmqpStamp(RoutingKey::APPLICATION_MAILER_QUEUE)]
-            );
-        } catch (\Exception $e) {
-            throw new UnrecoverableMessageHandlingException(\sprintf('User with email %s already exists', $message->getEmail()));
-        }
+       // } catch (\Exception $e) {
+//throw new UnrecoverableMessageHandlingException(\sprintf('User with email %s already exists. Error: %s', $message->getEmail(), $e->getMessage()));
+       // }
     }
 }

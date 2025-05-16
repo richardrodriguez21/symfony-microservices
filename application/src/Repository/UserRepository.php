@@ -19,8 +19,8 @@ class UserRepository extends ServiceEntityRepository
     public function save(User $user): void
     {
         try {
-            $this->_em->persist($user);
-            $this->_em->flush();
+            $this->getEntityManager()->persist($user);
+            $this->getEntityManager()->flush();
         } catch (UniqueConstraintViolationException $e) {
             throw $e;
         }
