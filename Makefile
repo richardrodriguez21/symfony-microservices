@@ -10,7 +10,7 @@ start-colima:
 	@echo "Checking if Colima is running..."
 	@if ! colima status 2>/dev/null | grep -q '^Status: Running'; then \
 		echo "Colima is not running. Starting Colima..."; \
-		colima start --cpu 1 --memory 2 --disk 10 && docker network create app-network || true; \
+		colima start --cpu 1 --memory 2 --disk 10 --network-address && docker network create app-network || true; \
 	else \
 		echo "Colima is already running."; \
 	fi
