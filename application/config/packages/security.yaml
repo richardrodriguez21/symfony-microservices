@@ -1,0 +1,10 @@
+security:
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        users_in_memory: { memory: null }
+    firewalls:
+        main:
+            lazy: true
+            provider: users_in_memory
+    access_control:
+        - { path: ^/api/internal, allow_if: "false == request.headers.has('X-Forwarded-For')" }
